@@ -1,16 +1,16 @@
-import Register from "components/Register";
-import Todo from "components/Todo";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Login from "./components/Login";
+import LoginPage from "pages/LoginPage";
+import RegisterPage from "pages/RegisterPage";
+import TodoPage from "pages/TodoPage";
 
 function App() {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/todo" element={<Todo />} />
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/todo" element={<TodoPage />} />
       </Routes>
     </div>
   );
