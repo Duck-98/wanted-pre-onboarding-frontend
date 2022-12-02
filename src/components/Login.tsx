@@ -1,67 +1,55 @@
-import React, { useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import axios from "axios";
 import styled, { css } from "styled-components";
 import { useUserDispatch } from "context/userContext";
+import { Link, useNavigate } from "react-router-dom";
+import { validationId, validationPassword } from "utils/validation";
+
 const Login = () => {
+  const navigate = useNavigate();
   const dispatch = useUserDispatch();
-  const [id, setId] = useState("");
-  const [idError, setIdError] = useState("");
+
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState<string | null>("");
   const [password, setPassword] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const [passwordError, setPasswordError] = useState<string | null>("");
   const [isError, setIsError] = useState(false);
-  const [data, setData] = useState({ id, password });
-  const handleSubmitId = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setId(e.target.value);
-  };
-  const handleSubmitPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-    console.log(password);
-  };
-  const validationId = (id: string) => {
-    const idRegex =
-      /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
-    return idRegex.test(id);
-  };
-  const validationPassword = (password: string) => {
-    const passwordRegex = /^.{8,}$/;
-    return passwordRegex.test(password);
-  };
-  const handleValidation = () => {
-    if (!validationId(id)) {
-      setIdError("이메일 형식으로 입력해주세요.ex)abc@gmail.com");
-    }
-    if (idError) {
-      setIdError("");
-      return false;
-    }
-    if (!validationPassword(password)) {
-      setPasswordError("8글자 이상 입력해주세요.");
-    }
-    if (passwordError) {
-      setPasswordError("");
-      return false;
-    }
-    if (idError === "" && passwordError === "") {
-      setIsError(true);
-      console.log("문제있음", isError);
-    } else {
-      setIsError(false);
-      console.log("문제없음", isError);
-    }
-    return true;
-  };
+  const checkUser = localStorage.getItem("token");
+  const handleSubmitEmail = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setEmail(e.target.value);
+      if (!validationId(e.target.value)) {
+        setEmailError("이메일 형식으로 입력해주세요.ex)abc@gmail.com");
+        setIsError(true);
+      } else {
+        setEmailError(null);
+        setIsError(false);
+      }
+    },
+    [],
+  );
+
+  const handleSubmitPassword = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setPassword(e.target.value);
+      if (!validationPassword(e.target.value)) {
+        setPasswordError("8글자 이상 입력해주세요");
+        setIsError(true);
+      } else {
+        setPasswordError(null);
+        setIsError(false);
+      }
+    },
+    [],
+  );
+
   const onClickLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    // e: React.FormEvent<HTMLFormElement>,
     e.preventDefault();
-    const valid = handleValidation();
-    if (!valid) {
-      console.log("error", idError);
-      console.log("error", passwordError);
-    } else {
-      setData({ id, password });
+    const data = { email, password };
+    if (!isError) {
       await axios
-        .post("https://pre-onboarding-selection-task.shop/auto/signin", data, {
-          withCredentials: true,
+        .post("http://localhost:8000/auth/signin", data, {
+          // withCredentials: true,
         })
         .then((response) => {
           axios.defaults.headers.common[
@@ -71,7 +59,7 @@ const Login = () => {
             type: "LOGIN",
             key: response.data.access_token,
           });
-          // navigate(-1);
+          localStorage.setItem("token", response.data.access_token);
           return response.data;
         })
         .catch((e) => {
@@ -80,17 +68,24 @@ const Login = () => {
         });
     }
   };
+  useEffect(() => {
+    if (checkUser === null) {
+      navigate("/");
+    } else {
+      navigate("/todo");
+    }
+  }, [checkUser]);
   return (
     <Div>
       <Container onSubmit={onClickLogin}>
         <Input
-          id="id"
-          name="id"
-          value={id}
+          id="email"
+          name="email"
+          value={email}
           placeholder="아이디를 입력해주세요"
-          onChange={handleSubmitId}
+          onChange={handleSubmitEmail}
         />
-        <span>{idError}</span>
+        <span>{emailError}</span>
         <Input
           id="password"
           name="password"
@@ -101,6 +96,9 @@ const Login = () => {
         />
         <span>{passwordError}</span>
         <Button isError={isError}>로그인</Button>
+        <div className="link">
+          <StyledLink to="/register">회원가입하러가기</StyledLink>
+        </div>
       </Container>
     </Div>
   );
@@ -114,6 +112,9 @@ const Div = styled.div`
   margin: 0 auto;
   align-items: center;
   height: 100%;
+  @media only screen and (min-width: 500px) {
+    width: 400px;
+  }
 `;
 
 const Container = styled.form`
@@ -124,6 +125,28 @@ const Container = styled.form`
   span {
     font-weight: bold;
     color: red;
+  }
+  .link {
+    display: flex;
+    justify-content: flex-end;
+  }
+  @media only screen and (max-width: 500px) {
+    width: 300px;
+  }
+`;
+
+const StyledLink = styled(Link)`
+  font-weight: bold;
+  font-size: 12px;
+  color: #03c75a;
+  cursor: pointer;
+  text-decoration: none;
+  &:focus,
+  &:hover,
+  &:visited,
+  &:link,
+  &:active {
+    text-decoration: none;
   }
 `;
 
@@ -152,16 +175,13 @@ const Button = styled.button<{ isError: boolean }>`
   color: #fff;
   border: none;
   border-radius: 0;
-  background-color: #03c75a;
   &:hover {
     background-color: #03a74d;
   }
   ${({ isError }) =>
     isError
-      ? css`
-          /* background-color: red; */
-        `
+      ? css``
       : css`
-          /* background-color: #03c75a; */
+          background-color: #03c75a;
         `};
 `;
