@@ -6,6 +6,7 @@ const GlobalStyle = createGlobalStyle`
       box-sizing: border-box;
     }
     body {
+      background: #E6E9ED;
       margin: 0;
       padding: 0;
       -webkit-overflow-scrolling: touch;
