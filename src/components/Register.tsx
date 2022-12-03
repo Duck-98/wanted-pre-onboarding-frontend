@@ -160,12 +160,12 @@ const Button = styled.button<{ isError: boolean }>`
   border: none;
   border-radius: 0;
   &:hover {
-    background-color: #03a74d;
+    background-color: #b088c9;
   }
   ${({ isError }) =>
     isError
       ? css``
       : css`
-          background-color: #03c75a;
+          background-color: #9f78b8;
         `};
 `;

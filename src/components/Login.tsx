@@ -138,7 +138,7 @@ const Container = styled.form`
 const StyledLink = styled(Link)`
   font-weight: bold;
   font-size: 12px;
-  color: #03c75a;
+  color: #9f78b8;
   cursor: pointer;
   text-decoration: none;
   &:focus,
@@ -176,12 +176,12 @@ const Button = styled.button<{ isError: boolean }>`
   border: none;
   border-radius: 0;
   &:hover {
-    background-color: #03a74d;
+    background-color: #b088c9;
   }
   ${({ isError }) =>
     isError
       ? css``
       : css`
-          background-color: #03c75a;
+          background-color: #9f78b8;
         `};
 `;
