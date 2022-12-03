@@ -1,3 +1,4 @@
+import { TodosProvider } from "context/todoContext";
 import { UserProvider } from "context/userContext";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
@@ -11,10 +12,12 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <UserProvider>
-    <BrowserRouter>
-      <GlobalStyle />
-      <App />
-    </BrowserRouter>
+    <TodosProvider>
+      <BrowserRouter>
+        <GlobalStyle />
+        <App />
+      </BrowserRouter>
+    </TodosProvider>
   </UserProvider>,
 );
 
