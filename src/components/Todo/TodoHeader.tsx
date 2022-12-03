@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { currentTime } from "utils/today";
 const TodoHeader = () => {
-  const [nowTimes, setNowTimes] = useState(currentTime().slice(8, 14));
+  const [nowTimes, setNowTimes] = useState(currentTime().slice(13, 19));
   useEffect(() => {
     const timer = setInterval(() => {
       setNowTimes(currentTime().slice(13, 19));
