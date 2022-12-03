@@ -17,7 +17,8 @@ export const currentTime = () => {
     dayofWeek +
     "요일" +
     hours +
-    ":" +
-    minutes
+    "시" +
+    minutes +
+    "분"
   );
 };
