@@ -17,6 +17,7 @@ type StateProps = {
 };
 type TodosState = StateProps[];
 type ActionProps =
+  | any
   | {
       type: "CREATE";
       todo: StateProps[];
@@ -24,9 +25,8 @@ type ActionProps =
   | {
       type: "TOGGLE";
       id: number;
-      todo: TodoType;
     }
-  | { type: "UPDATE"; todo: TodoType }
+  | { type: "UPDATE"; todo: StateProps[]; id: number }
   | { type: "READ"; todo: StateProps[] }
   | { type: "DELETE"; id: number };
 const initialState = [
@@ -56,9 +56,10 @@ function todoReducer(state: TodosState, action: ActionProps): TodosState {
       );
     case "DELETE":
       return state.filter((todo) => todo.id !== action.id);
-    // case "UPDATE":
-    //     let updateTodo = action.todo;
-    //     return  updateTodo
+    case "UPDATE":
+      return state.map((todo) =>
+        todo.id === action.id ? { ...todo, todo: todo.todo } : todo,
+      );
     case "READ":
       return state.concat(action.todo);
     default:
