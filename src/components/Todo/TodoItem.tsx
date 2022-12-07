@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -7,16 +7,20 @@ import CloseIcon from "@mui/icons-material/Close";
 import styled, { css } from "styled-components";
 import { TodoType } from "types/type";
 import { useTodoDispatch } from "context/todoContext";
-
+import { AXIOS_URL } from "utils/api";
 const TodoItem = ({ todo, isCompleted, id }: TodoType) => {
   const dispatch = useTodoDispatch();
   const [edit, setEdit] = useState(false);
   const [editTodo, setEditTodo] = useState<string>("");
+  const [editIsCompleted, setEditIsCompleted] = useState<boolean>(!isCompleted);
 
+  const onChangeTodo = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditTodo(e.target.value);
+  };
   const handleDeleteTodo = useCallback(async () => {
     const checkUser = localStorage.getItem("token");
     try {
-      await axios.delete(`http://localhost:8000/todos/${id}`, {
+      await axios.delete(`${AXIOS_URL}/todos/${id}`, {
         headers: {
           Authorization: `Bearer ${checkUser}`,
         },
@@ -27,11 +31,12 @@ const TodoItem = ({ todo, isCompleted, id }: TodoType) => {
     }
   }, []);
 
-  const handleCheckTodo = useCallback(async () => {
-    const data = { todo, isCompleted };
+  const handleCheckTodo = async () => {
+    setEditIsCompleted((prev: boolean) => !prev);
+    const data = { todo, isCompleted: editIsCompleted };
     const checkUser = localStorage.getItem("token");
     try {
-      await axios.put(`http://localhost:8000/todos/${id}`, data, {
+      await axios.put(`${AXIOS_URL}/todos/${id}`, data, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${checkUser}`,
@@ -41,13 +46,13 @@ const TodoItem = ({ todo, isCompleted, id }: TodoType) => {
     } catch (error) {
       console.error(error);
     }
-  }, []);
+  };
 
-  const handleEditTodo = useCallback(async () => {
-    const data = { editTodo };
+  const onSubmitEditTodo = async () => {
+    const data = { todo: editTodo, isCompleted };
     const checkUser = localStorage.getItem("token");
     try {
-      await axios.put(`http://localhost:8000/todos/${id}`, data, {
+      await axios.put(`${AXIOS_URL}/todos/${id}`, data, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${checkUser}`,
@@ -57,17 +62,13 @@ const TodoItem = ({ todo, isCompleted, id }: TodoType) => {
     } catch (error) {
       console.error(error);
     }
-  }, []);
-
+  };
   const handleEdit = () => setEdit((prev) => !prev);
-  const onChangeTodo = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditTodo(e.target.value);
-  }, []);
 
   return (
     <>
       {edit ? (
-        <TodoItemEditBox onSubmit={handleEditTodo}>
+        <TodoItemEditBox onSubmit={onSubmitEditTodo}>
           <input
             autoFocus
             id="editTodo"
@@ -156,8 +157,8 @@ const CheckContainer = styled.div<{ isCompleted: boolean }>`
   ${({ isCompleted }) =>
     isCompleted &&
     css`
-      border: 1px solid #38d9a9;
-      color: #38d9a9;
+      border: 1px solid #9f78b8;
+      color: #9f78b8;
     `}
 `;
 
