@@ -25,11 +25,15 @@ const TodoHeader = () => {
     <div>
       <HeaderContainer>
         <div className="day">
-          <h1>{currentTime().slice(0, 5)}</h1>
-          <h1>{currentTime().slice(5, 8)}</h1>
-          <h1>{currentTime().slice(8, 10)}</h1>
-          <h1>{currentTime().slice(10, 13)}</h1>
-          <Button onClick={handleLogout}>로그아웃</Button>
+          <div className="day-con">
+            <h1>{currentTime().slice(0, 5)}</h1>
+            <h1>{currentTime().slice(5, 8)}</h1>
+            <h1>{currentTime().slice(8, 10)}</h1>
+            <h1>{currentTime().slice(10, 13)}</h1>
+          </div>
+          <div className="btn-con">
+            <Button onClick={handleLogout}>로그아웃</Button>
+          </div>
         </div>
         <div className="sub-container">
           <HeaderSpan>{nowTimes}</HeaderSpan>
@@ -72,6 +76,14 @@ const HeaderContainer = styled.div`
   }
   .day {
     display: flex;
+    justify-content: space-between;
+    .day-con {
+      display: flex;
+    }
+    .btn-con {
+      display: flex;
+      align-items: center;
+    }
   }
   .sub-container {
     display: flex;
