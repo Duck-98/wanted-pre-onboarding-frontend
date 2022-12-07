@@ -1,17 +1,17 @@
 import axios from "axios";
 import { useTodoDispatch, useTodoState } from "context/todoContext";
-// import { useUserState } from "context/userContext";
 import React, { useEffect, useCallback } from "react";
 import styled from "styled-components";
+import { TodoType } from "types/type";
 import TodoItem from "./TodoItem";
+import { AXIOS_URL } from "utils/api";
 const TodoList = () => {
   const dispatch = useTodoDispatch();
   const todos = useTodoState();
-  // const users = useUserState;
   const getTodos = useCallback(async () => {
     const checkUser = localStorage.getItem("token");
     try {
-      const response = await axios.get("http://localhost:8000/todos", {
+      const response = await axios.get(`${AXIOS_URL}/todos`, {
         headers: {
           Authorization: `Bearer ${checkUser}`,
         },
@@ -22,14 +22,13 @@ const TodoList = () => {
     }
   }, []);
 
-  // const dispatch = useTodoDispatch();
   useEffect(() => {
     getTodos();
-    console.log(todos);
   }, []);
+
   return (
     <TodoListBox>
-      {todos?.map((todo) => (
+      {todos?.map((todo: TodoType) => (
         <TodoItem
           key={todo.id}
           id={todo.id}

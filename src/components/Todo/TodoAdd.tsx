@@ -3,6 +3,7 @@ import axios from "axios";
 import styled, { css } from "styled-components";
 import AddIcon from "@mui/icons-material/Add";
 import { useTodoDispatch } from "context/todoContext";
+import { AXIOS_URL } from "utils/api";
 const TodoAdd = () => {
   const checkUser = localStorage.getItem("token");
   const dispatch = useTodoDispatch();
@@ -16,7 +17,7 @@ const TodoAdd = () => {
   const onSubmitTodo = async () => {
     const data = { todo };
     try {
-      const response = await axios.post(`http://localhost:8000/todos`, data, {
+      const response = await axios.post(`${AXIOS_URL}/todos`, data, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${checkUser}`,
