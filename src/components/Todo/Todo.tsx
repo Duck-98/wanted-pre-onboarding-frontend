@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
@@ -26,8 +26,8 @@ const TodoContainer = styled.div`
   margin-bottom: 32px;
   display: flex;
   flex-direction: column;
-  @media only screen and (min-width: 500px) {
-    width: 400px;
+  @media only screen and (max-width: 500px) {
+    width: 350px;
   }
 `;
 

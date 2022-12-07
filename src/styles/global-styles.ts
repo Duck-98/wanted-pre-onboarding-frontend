@@ -14,10 +14,7 @@ const GlobalStyle = createGlobalStyle`
       width: 100%;
       height: 100%;
     }
-    @media only screen and (min-width: 769px) {
-        width: 400px;
-        margin-left: calc(50% - 200px);
-      }
+
 `;
 
 export default GlobalStyle;

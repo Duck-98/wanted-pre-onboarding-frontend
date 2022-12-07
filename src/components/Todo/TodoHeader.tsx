@@ -66,6 +66,9 @@ const HeaderContainer = styled.div`
   h1 {
     font-size: 25px;
     padding-right: 10px;
+    @media only screen and (max-width: 500px) {
+      font-size: 18px;
+    }
   }
   .day {
     display: flex;
@@ -79,6 +82,9 @@ const HeaderContainer = styled.div`
 const HeaderSpan = styled.span`
   font-size: 18px;
   font-weight: bold;
+  @media only screen and (max-width: 500px) {
+    font-size: 13px;
+  }
 `;
 
 const Divider = styled.div`
