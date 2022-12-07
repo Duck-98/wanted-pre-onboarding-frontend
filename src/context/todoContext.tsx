@@ -1,10 +1,4 @@
-import React, {
-  useReducer,
-  createContext,
-  Dispatch,
-  useRef,
-  useContext,
-} from "react";
+import React, { useReducer, createContext, Dispatch, useContext } from "react";
 import { TodoType } from "types/type";
 
 type TodosState = TodoType[];
@@ -49,16 +43,12 @@ function todoReducer(state: TodosState, action: ActionProps): TodosState {
 type TodosDispatch = Dispatch<ActionProps>;
 const TodosStateContext = createContext<TodosState | null>(null);
 const TodosDispatchContext = createContext<TodosDispatch | null>(null);
-const TodosNextIdContext = createContext<null | any>(null);
 export function TodosProvider({ children }: { children: React.ReactNode }) {
   const [todos, dispatch] = useReducer(todoReducer, []);
-  const nextId = useRef(5);
   return (
     <TodosStateContext.Provider value={todos}>
       <TodosDispatchContext.Provider value={dispatch}>
-        <TodosNextIdContext.Provider value={nextId}>
-          {children}
-        </TodosNextIdContext.Provider>
+        {children}
       </TodosDispatchContext.Provider>
     </TodosStateContext.Provider>
   );
@@ -78,12 +68,4 @@ export function useTodoDispatch() {
     throw new Error("Cannot find TodoProvider");
   }
   return dispatch;
-}
-
-export function useTodoNextId() {
-  const context = useContext(TodosNextIdContext);
-  if (!context) {
-    throw new Error("Cannot find TodoProvider");
-  }
-  return context;
 }

@@ -12,7 +12,8 @@ const TodoAdd = () => {
   const onChangeTodo = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setTodo(e.target.value);
   }, []);
-  const onSubmitTodo = async () => {
+  const onSubmitTodo = async (e: any) => {
+    e.preventDefault();
     const data = { todo };
     try {
       const response = await axios.post(`${AXIOS_URL}/todos`, data, {
@@ -22,6 +23,7 @@ const TodoAdd = () => {
         },
       });
       dispatch({ type: "CREATE", todo: response.data });
+      setTodo("");
     } catch (err) {
       console.log(err);
     }
@@ -78,4 +80,4 @@ const Input = styled.input`
   box-sizing: border-box;
 `;
 
-export default TodoAdd;
+export default React.memo(TodoAdd);
