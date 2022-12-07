@@ -1,13 +1,11 @@
 import React, { useCallback, useState } from "react";
 import axios from "axios";
 import styled, { css } from "styled-components";
-import { useUserDispatch } from "context/userContext";
 import { useNavigate } from "react-router-dom";
 import { validationId, validationPassword } from "utils/validation";
-
-const Login = () => {
+import { AXIOS_URL } from "utils/api";
+const Register = () => {
   const navigate = useNavigate();
-  const dispatch = useUserDispatch();
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState<string | null>("");
   const [password, setPassword] = useState("");
@@ -42,13 +40,12 @@ const Login = () => {
     [],
   );
 
-  const onClickLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onClickSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = { email, password };
     if (!isError) {
       await axios
-        .post("http://localhost:8000/auth/signup", JSON.stringify(data), {
-          // withCredentials: true,
+        .post(`${AXIOS_URL}/auth/signup`, JSON.stringify(data), {
           headers: {
             "Content-Type": `application/json`, // application/json 타입 선언
           },
@@ -57,16 +54,12 @@ const Login = () => {
           axios.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${response.data.access_token}`;
-          dispatch({
-            type: "LOGIN",
-            key: response.data.access_token,
-          });
           navigate("/");
           return response.data;
         })
         .catch((e) => {
           console.log(e.response.data);
-          alert("아이디 혹은 비밀번호를 확인하세요.");
+          alert(e.response.data.message);
         });
     }
   };
@@ -76,7 +69,7 @@ const Login = () => {
       <div className="subject">
         <label>회원가입</label>
       </div>
-      <Container onSubmit={onClickLogin}>
+      <Container onSubmit={onClickSignUp}>
         <Input
           id="email"
           name="email"
@@ -100,7 +93,7 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
 
 const Div = styled.div`
   display: flex;

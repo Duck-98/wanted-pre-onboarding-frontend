@@ -1,5 +1,4 @@
 import { TodosProvider } from "context/todoContext";
-import { UserProvider } from "context/userContext";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import GlobalStyle from "styles/global-styles";
@@ -11,14 +10,12 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <UserProvider>
-    <TodosProvider>
-      <BrowserRouter>
-        <GlobalStyle />
-        <App />
-      </BrowserRouter>
-    </TodosProvider>
-  </UserProvider>,
+  <TodosProvider>
+    <BrowserRouter>
+      <GlobalStyle />
+      <App />
+    </BrowserRouter>
+  </TodosProvider>,
 );
 
 reportWebVitals();

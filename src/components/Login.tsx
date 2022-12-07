@@ -1,13 +1,11 @@
 import React, { useCallback, useState, useEffect } from "react";
 import axios from "axios";
 import styled, { css } from "styled-components";
-import { useUserDispatch } from "context/userContext";
 import { Link, useNavigate } from "react-router-dom";
 import { validationId, validationPassword } from "utils/validation";
-
+import { AXIOS_URL } from "utils/api";
 const Login = () => {
   const navigate = useNavigate();
-  const dispatch = useUserDispatch();
 
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState<string | null>("");
@@ -48,18 +46,13 @@ const Login = () => {
     const data = { email, password };
     if (!isError) {
       await axios
-        .post("http://localhost:8000/auth/signin", data, {
-          // withCredentials: true,
-        })
+        .post(`${AXIOS_URL}/auth/signin`, data, {})
         .then((response) => {
           axios.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${response.data.access_token}`;
-          dispatch({
-            type: "LOGIN",
-            key: response.data.access_token,
-          });
           localStorage.setItem("token", response.data.access_token);
+          navigate("/todo");
           return response.data;
         })
         .catch((e) => {
@@ -74,7 +67,7 @@ const Login = () => {
     } else {
       navigate("/todo");
     }
-  }, [checkUser]);
+  }, []);
   return (
     <Div>
       <Container onSubmit={onClickLogin}>
