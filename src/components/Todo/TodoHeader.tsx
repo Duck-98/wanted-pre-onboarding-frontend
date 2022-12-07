@@ -102,6 +102,6 @@ const HeaderSpan = styled.span`
 const Divider = styled.div`
   width: 100%;
   height: 5px;
-  background-color: whitesmoke;
+  background-color: #9f78b8;
 `;
 export default TodoHeader;

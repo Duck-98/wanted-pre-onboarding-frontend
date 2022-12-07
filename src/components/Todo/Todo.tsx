@@ -11,8 +11,22 @@ const Todo = ({ children }: any) => {
     }
   }, [checkUser]);
 
-  return <TodoContainer>{children}</TodoContainer>;
+  return (
+    <TodoContainer>
+      <TodoTitle>TODO</TodoTitle>
+      {children}
+    </TodoContainer>
+  );
 };
+
+const TodoTitle = styled.div`
+  padding-top: 10px;
+  display: flex;
+  justify-content: center;
+  font-size: 30px;
+  color: #9f78b8;
+  font-weight: bold;
+`;
 
 const TodoContainer = styled.div`
   width: 500px;

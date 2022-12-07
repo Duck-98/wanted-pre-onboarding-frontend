@@ -136,6 +136,8 @@ const TodoItemBox = styled.div`
   margin-top: 10px;
   display: flex;
   align-items: center;
+  padding-bottom: 5px;
+  border-bottom: 1px solid whitesmoke;
   &:hover {
     ${IconCon} {
       display: initial;
