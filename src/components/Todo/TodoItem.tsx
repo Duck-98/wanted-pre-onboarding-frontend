@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import axios from "axios";
 import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -74,7 +74,6 @@ const TodoItem = ({ todo, isCompleted, id }: TodoType) => {
             id="editTodo"
             name="editTodo"
             value={editTodo}
-            // defaultValue={todo}
             onChange={onChangeTodo}
           />
           <button className="icon" type="submit">

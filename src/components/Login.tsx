@@ -13,6 +13,7 @@ const Login = () => {
   const [passwordError, setPasswordError] = useState<string | null>("");
   const [isError, setIsError] = useState(false);
   const checkUser = localStorage.getItem("token");
+
   const handleSubmitEmail = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setEmail(e.target.value);
